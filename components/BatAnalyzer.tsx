@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/neon-button";
 import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 interface AnalysisResult {
   timestamp: string;
@@ -40,7 +41,7 @@ export default function BatAnalyzer() {
   // Settings
   const [minConfidence, setMinConfidence] = useState(0.5);
   const [selectedModel, setSelectedModel] = useState(MODELS[0].id);
-  const [showSettings, setShowSettings] = useState(false);
+  const [showSettings, setShowSettings] = useState(true); // Default to open for visibility
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -112,12 +113,15 @@ export default function BatAnalyzer() {
           </p>
         </div>
         <Button 
-          variant="outline" 
+          variant="ghost" 
           onClick={() => setShowSettings(!showSettings)}
-          className="bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white"
+          className={cn(
+            "border-zinc-800 text-zinc-400 hover:text-white transition-colors px-4 py-2",
+            showSettings && "bg-blue-500/10 border-blue-500/50 text-blue-400"
+          )}
         >
           <Settings2 className="mr-2 h-4 w-4" />
-          Settings
+          {showSettings ? "Hide Settings" : "Show Settings"}
         </Button>
       </div>
 
