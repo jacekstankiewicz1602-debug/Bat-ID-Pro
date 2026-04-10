@@ -11,10 +11,10 @@ from PIL import Image
 # Add the root directory to sys.path to allow importing from BattyBirdNET-Analyzer
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from BattyBirdNET_Analyzer import analyze
-from BattyBirdNET_Analyzer import config as cfg
-from BattyBirdNET_Analyzer import utils
-from BattyBirdNET_Analyzer import audio
+from batty_birdnet_analyzer import analyze
+from batty_birdnet_analyzer import config as cfg
+from batty_birdnet_analyzer import utils
+from batty_birdnet_analyzer import audio
 
 def generate_spectrogram(sig, rate):
     """Generates a base64 encoded spectrogram PNG image using only Numpy."""
@@ -119,7 +119,7 @@ def handler(request):
 
         # 3. Configure Analyzer
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        analyzer_dir = os.path.join(base_dir, 'BattyBirdNET-Analyzer')
+        analyzer_dir = os.path.join(base_dir, 'batty_birdnet_analyzer')
 
         # Default paths
         cfg.MODEL_PATH = os.path.join(analyzer_dir, 'checkpoints/V2.4/BirdNET_GLOBAL_6K_V2.4_Model_FP32.tflite')
