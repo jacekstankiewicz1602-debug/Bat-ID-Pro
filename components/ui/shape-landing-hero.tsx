@@ -73,6 +73,7 @@ function ElegantShape({
 }
 
 export function HeroGeometric({
+    badge = "Bat-ID-Pro",
     title1 = "Elevate Your Digital Vision",
     title2 = "Crafting Exceptional Websites",
     description = "Advanced bioacoustic identification system for automated bat species monitoring and classification.",
@@ -199,3 +200,4 @@ export function HeroGeometric({
         </div>
     );
 }
+
