@@ -17,32 +17,48 @@ from BattyBirdNET_Analyzer import utils
 from BattyBirdNET_Analyzer import audio
 
 def generate_spectrogram(sig, rate):
-    """Generates a base64 encoded spectrogram PNG image."""
-    import librosa
+    """Generates a base64 encoded spectrogram PNG image using only Numpy."""
+    # STFT parameters
+    n_fft = 1024
+    hop_length = 512
     
-    # Compute Mel-spectrogram
-    # For bats, we use higher frequency resolution
-    S = librosa.feature.melspectrogram(y=sig, sr=rate, n_mels=128, fmax=rate/2)
-    S_dB = librosa.power_to_db(S, ref=np.max)
+    # Window function
+    window = np.hanning(n_fft)
+    
+    # Compute STFT
+    def get_stft(x):
+        frames = []
+        for i in range(0, len(x) - n_fft, hop_length):
+            frame = x[i:i + n_fft] * window
+            frames.append(np.fft.rfft(frame))
+        return np.array(frames)
+
+    # Magnitude spectrogram
+    S = np.abs(get_stft(sig))
+    
+    # Log scaling
+    S_dB = 20 * np.log10(np.maximum(1e-5, S))
     
     # Normalize to 0-255
-    S_dB_norm = ((S_dB - S_dB.min()) / (S_dB.max() - S_dB.min()) * 255).astype(np.uint8)
+    S_min, S_max = S_dB.min(), S_dB.max()
+    if S_max > S_min:
+        S_dB_norm = ((S_dB - S_min) / (S_max - S_min) * 255).astype(np.uint8)
+    else:
+        S_dB_norm = np.zeros_like(S_dB, dtype=np.uint8)
     
-    # Create an image using a "Magma"-like color mapping
-    # Simple mapping: 0 (black/dark) -> 255 (yellow/bright)
-    # We can create a LUT for better visual quality
+    # Simple "Magma" Colormap LUT
     lut = np.zeros((256, 3), dtype=np.uint8)
     for i in range(256):
-        # Fake Magma: dark purple -> red -> orange -> yellow
         lut[i] = [
-            int(min(255, i * 1.5)), 
-            int(min(255, i * 0.8)), 
-            int(min(255, i * 0.3))
+            int(min(255, i * 1.8)), # Red
+            int(min(255, i * 0.9)), # Green
+            int(min(255, i * 0.4))  # Blue
         ]
     
-    # Apply colormap
-    img_data = lut[S_dB_norm]
-    # Flip vertically so low frequencies are at the bottom
+    # Apply colormap and rotate
+    # STFT is (time, freq), we want (freq, time) for display
+    img_data = lut[S_dB_norm.T]
+    # Flip vertically (low frequencies at bottom)
     img_data = np.flipud(img_data)
     
     img = Image.fromarray(img_data)
