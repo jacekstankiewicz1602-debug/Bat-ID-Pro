@@ -17,10 +17,10 @@ export default function Home() {
         <BatAnalyzer />
       </div>
 
-      {/* Footer info */}
+      {/* Stopka informacyjna */}
       <footer className="py-12 border-t border-zinc-900 text-center">
         <p className="text-zinc-600 text-sm">
-          Powered by BattyBirdNET-Analyzer & TFLite
+          Napędzane przez BattyBirdNET-Analyzer & TFLite
         </p>
       </footer>
     </main>
