@@ -1,26 +1,28 @@
 import { HeroGeometric } from "@/components/ui/shape-landing-hero";
-import { Button } from "@/components/ui/neon-button";
+import BatAnalyzer from "@/components/BatAnalyzer";
 
 export default function Home() {
   return (
-    <main>
-      {/* Sekcja Hero */}
+    <main className="bg-[#030303] min-h-screen">
+      {/* Hero Section */}
       <HeroGeometric
-        badge="Kokonut UI"
-        title1="Elevate Your"
-        title2="Digital Vision"
+        badge="Bat ID Pro v1.0"
+        title1="Identify Bats"
+        title2="By Their Voice"
       />
 
-      {/* Sekcja z przyciskami - ciemny motyw */}
-      <div className="min-h-screen flex flex-col items-center justify-center gap-6 bg-[#030303] text-white p-8">
-        <h2 className="text-4xl font-bold">Przegląd Komponentów</h2>
-        <div className="flex flex-col gap-3">
-          <Button>Domyślny Przycisk</Button>
-          <Button neon={false}>Zwykły Przycisk</Button>
-          <Button variant={"solid"}>Solidny Przycisk</Button>
-          <Button size="lg">Duży Przycisk</Button>
-        </div>
+      {/* Functional Analyzer Section */}
+      <div className="pb-24 px-8 relative z-10">
+        <BatAnalyzer />
       </div>
+
+      {/* Footer info */}
+      <footer className="py-12 border-t border-zinc-900 text-center">
+        <p className="text-zinc-600 text-sm">
+          Powered by BattyBirdNET-Analyzer & TFLite
+        </p>
+      </footer>
     </main>
   );
 }
+

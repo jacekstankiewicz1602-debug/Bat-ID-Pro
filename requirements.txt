@@ -2,3 +2,5 @@ numpy>=1.21.0
 librosa>=0.10.0
 soundfile>=0.12.1
 resampy>=0.4.2
+tflite-runtime>=2.14.0
+werkzeug>=3.0.0
