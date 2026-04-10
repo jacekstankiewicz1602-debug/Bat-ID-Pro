@@ -4,3 +4,5 @@ soundfile>=0.12.1
 resampy>=0.4.2
 tflite-runtime>=2.14.0
 werkzeug>=3.0.0
+Pillow>=10.0.0
+scipy>=1.10.0
