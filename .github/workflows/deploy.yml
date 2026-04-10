@@ -20,7 +20,10 @@ jobs:
         cache: 'npm'
 
     - name: Install dependencies
-      run: npm install
+      run: npm install --legacy-peer-deps
 
     - name: Build Next.js
       run: npm run build
+      env:
+        NEXT_TELEMETRY_DISABLED: 1
+        VERCEL_GIT_COMMIT_SHA: ${{ github.sha }}

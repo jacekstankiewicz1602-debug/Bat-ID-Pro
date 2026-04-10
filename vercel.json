@@ -2,7 +2,7 @@
   "version": 2,
   "framework": "nextjs",
   "functions": {
-    "api/**/*.py": {
+    "api/analyze.py": {
       "memory": 1024,
       "maxDuration": 10
     }
