@@ -25,10 +25,17 @@ interface AnalysisResult {
 const MODELS = [
   { id: "BattyBirdNET-EU-256kHz", name: "Europe (General)" },
   { id: "BattyBirdNET-UK-256kHz", name: "United Kingdom" },
-  { id: "BattyBirdNET-USA-256kHz", name: "USA (General)" },
-  { id: "BattyBirdNET-Bavaria-256kHz-high", name: "Bavaria (High Sens)" },
   { id: "BattyBirdNET-Scotland-256kHz", name: "Scotland" },
+  { id: "BattyBirdNET-SouthWales-256kHz", name: "South Wales" },
   { id: "BattyBirdNET-Sweden-256kHz", name: "Sweden" },
+  { id: "BattyBirdNET-Bavaria-256kHz", name: "Bavaria (Standard)" },
+  { id: "BattyBirdNET-Bavaria-256kHz-high", name: "Bavaria (High Sensitivity)" },
+  { id: "BattyBirdNET-USA-256kHz", name: "USA (General)" },
+  { id: "BattyBirdNET-USA-EAST-256kHz", name: "USA East Coast" },
+  { id: "BattyBirdNET-USA-EAST-256kHz-high", name: "USA East (High Sensitivity)" },
+  { id: "BattyBirdNET-USA-WEST-256kHz", name: "USA West Coast" },
+  { id: "CUSTOM-BAT-256kHz", name: "Custom Bat Classifier" },
+  { id: "CUSTOM-BIRD-48kHz", name: "Custom Bird Classifier (48kHz)" },
 ];
 
 export default function BatAnalyzer() {
