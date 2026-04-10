@@ -7,8 +7,9 @@ export default function Home() {
       {/* Hero Section */}
       <HeroGeometric
         badge="Bat ID Pro v1.0"
-        title1="Identify Bats"
-        title2="By Their Voice"
+        title1="Identyfikacja Nietoperzy"
+        title2="Na Podstawie Głosu"
+        description="Profesjonalny system analizy bioakustycznej wykorzystujący zaawansowane sieci neuronowe do automatycznej identyfikacji i klasyfikacji gatunków nietoperzy w czasie rzeczywistym."
       />
 
       {/* Functional Analyzer Section */}

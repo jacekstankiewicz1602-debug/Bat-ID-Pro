@@ -73,13 +73,14 @@ function ElegantShape({
 }
 
 export function HeroGeometric({
-    badge = "Design Collective",
     title1 = "Elevate Your Digital Vision",
     title2 = "Crafting Exceptional Websites",
+    description = "Advanced bioacoustic identification system for automated bat species monitoring and classification.",
 }: {
     badge?: string;
     title1?: string;
     title2?: string;
+    description?: string;
 }) {
     const fadeUpVariants = {
         hidden: { opacity: 0, y: 30 },
@@ -188,8 +189,7 @@ export function HeroGeometric({
                         animate="visible"
                     >
                         <p className="text-base sm:text-lg md:text-xl text-white/40 mb-8 leading-relaxed font-light tracking-wide max-w-xl mx-auto px-4">
-                            Crafting exceptional digital experiences through
-                            innovative design and cutting-edge technology.
+                            {description}
                         </p>
                     </motion.div>
                 </div>
