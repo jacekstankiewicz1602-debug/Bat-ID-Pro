@@ -1,0 +1,60 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# Next.js
+.next/
+out/
+
+# Build
+dist/
+build/
+
+# Python virtual environments
+nietoperze_env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Misc
+.DS_Store
+*.pem
+*.log
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ruff cache
+.ruff_cache/
+
+# Large model/data files (stored externally)
+BattyBirdNET-Analyzer/checkpoints/V2.4/
+BattyBirdNET-Analyzer/checkpoints/**/*.tflite
+!BattyBirdNET-Analyzer/checkpoints/bats/v1.0/*.tflite
+BattyBirdNET-Analyzer/checkpoints/**/*.pb
+BattyBirdNET-Analyzer/checkpoints/**/*.prof
+BattyBirdNET-Analyzer/put-your-files-here/**
+BattyBirdNET-Analyzer/bat_gui.log
+BattyBirdNET-Analyzer/example/
+BattyBirdNET-Analyzer/gui/
+*.log
+*.csv
+*.wav
+*.mp3
+*.flac
+*.ogg
+*.m4a
