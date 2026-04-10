@@ -5,7 +5,6 @@ import uuid
 import base64
 import io
 import numpy as np
-from werkzeug.formparser import MultiPartParser
 from PIL import Image
 
 # Add the root directory to sys.path to allow importing from BattyBirdNET-Analyzer
@@ -16,16 +15,15 @@ from batty_birdnet_analyzer import config as cfg
 from batty_birdnet_analyzer import utils
 from batty_birdnet_analyzer import audio
 
+from werkzeug.wrappers import Request, Response
+
 def generate_spectrogram(sig, rate):
     """Generates a base64 encoded spectrogram PNG image using only Numpy."""
     # STFT parameters
     n_fft = 1024
     hop_length = 512
-    
-    # Window function
     window = np.hanning(n_fft)
     
-    # Compute STFT
     def get_stft(x):
         frames = []
         for i in range(0, len(x) - n_fft, hop_length):
@@ -35,8 +33,6 @@ def generate_spectrogram(sig, rate):
 
     # Magnitude spectrogram
     S = np.abs(get_stft(sig))
-    
-    # Log scaling
     S_dB = 20 * np.log10(np.maximum(1e-5, S))
     
     # Normalize to 0-255
@@ -56,60 +52,39 @@ def generate_spectrogram(sig, rate):
         ]
     
     # Apply colormap and rotate
-    # STFT is (time, freq), we want (freq, time) for display
     img_data = lut[S_dB_norm.T]
-    # Flip vertically (low frequencies at bottom)
     img_data = np.flipud(img_data)
     
     img = Image.fromarray(img_data)
-    
-    # Save to buffer
     buf = io.BytesIO()
     img.save(buf, format='PNG')
     return base64.b64encode(buf.getvalue()).decode('utf-8')
 
-def handler(request):
+@Request.application
+def application(request):
+    """Glowne API Flask/WSGI - obsluguje Vercel"""
+    
+    if request.method == 'OPTIONS':
+         return Response('', status=200, headers={'Access-Control-Allow-Origin': '*'})
+         
     if request.method != 'POST':
-        return {
-            'statusCode': 405,
-            'body': json.dumps({'error': 'Method not allowed. Use POST.'}),
-            'headers': {'Content-Type': 'application/json'}
-        }
+        return Response(
+            json.dumps({'error': 'Method not allowed. Use POST.'}), 
+            status=405, 
+            mimetype='application/json'
+        )
 
     try:
-        # 1. Handle Multipart Upload
         content_type = request.headers.get('Content-Type', '')
         if 'multipart/form-data' not in content_type:
-             return {
-                'statusCode': 400,
-                'body': json.dumps({'error': 'Content-Type must be multipart/form-data'}),
-                'headers': {'Content-Type': 'application/json'}
-            }
+            return Response(json.dumps({'error': 'Content-Type must be multipart/form-data'}), status=400, mimetype='application/json')
 
-        parser = MultiPartParser()
-        boundary = content_type.split('=')[-1]
-        stream = getattr(request, 'stream', None) or getattr(request, 'body', None)
-        
-        if not stream:
-             return {
-                'statusCode': 400,
-                'body': json.dumps({'error': 'No data received'}),
-                'headers': {'Content-Type': 'application/json'}
-            }
-            
-        form_data, files, _ = parser.parse(stream, boundary, request.content_length)
-        
-        audio_file = files.get('file')
+        audio_file = request.files.get('file')
         if not audio_file:
-             return {
-                'statusCode': 400,
-                'body': json.dumps({'error': 'No file uploaded with key "file"'}),
-                'headers': {'Content-Type': 'application/json'}
-            }
+            return Response(json.dumps({'error': 'No file uploaded with key "file"'}), status=400, mimetype='application/json')
 
-        # Extra Parameters
-        min_confidence = float(form_data.get('min_confidence', 0.5))
-        selected_model = form_data.get('model', 'BattyBirdNET-EU-256kHz')
+        min_confidence = float(request.form.get('min_confidence', 0.5))
+        selected_model = request.form.get('model', 'BattyBirdNET-EU-256kHz')
 
         # 2. Save Temporary File
         temp_id = str(uuid.uuid4())
@@ -147,7 +122,6 @@ def handler(request):
         success, results = analyze.analyzeFile((temp_path, cfg.get_config()))
 
         # 5. Generate Spectrogram
-        # Load a few seconds for the visual
         sig, rate = audio.openAudioFile(temp_path, sample_rate=cfg.SAMPLE_RATE, duration=3.0)
         spec_base64 = generate_spectrogram(sig, rate)
 
@@ -156,11 +130,7 @@ def handler(request):
             os.remove(temp_path)
 
         if not success:
-            return {
-                'statusCode': 500,
-                'body': json.dumps({'error': 'Analysis failed'}),
-                'headers': {'Content-Type': 'application/json'}
-            }
+            return Response(json.dumps({'error': 'Analysis failed'}), status=500, mimetype='application/json')
 
         # 7. Format Results
         formatted_results = []
@@ -174,23 +144,14 @@ def handler(request):
                         'confidence': float(top_hit[1])
                     })
 
-        return {
-            'statusCode': 200,
-            'body': json.dumps({
-                'success': True,
-                'filename': audio_file.filename,
-                'results': formatted_results,
-                'spectrogram': spec_base64
-            }),
-            'headers': {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Origin': '*'
-            }
-        }
+        return Response(json.dumps({
+            'success': True,
+            'filename': audio_file.filename,
+            'results': formatted_results,
+            'spectrogram': spec_base64
+        }), status=200, mimetype='application/json', headers={'Access-Control-Allow-Origin': '*'})
 
     except Exception as e:
-        return {
-            'statusCode': 500,
-            'body': json.dumps({'error': str(e)}),
-            'headers': {'Content-Type': 'application/json'}
-        }
+        return Response(json.dumps({'error': str(e)}), status=500, mimetype='application/json')
+
+app = application
