@@ -23,19 +23,19 @@ interface AnalysisResult {
 }
 
 const MODELS = [
-  { id: "BattyBirdNET-EU-256kHz", name: "Europe (General)" },
-  { id: "BattyBirdNET-UK-256kHz", name: "United Kingdom" },
-  { id: "BattyBirdNET-Scotland-256kHz", name: "Scotland" },
-  { id: "BattyBirdNET-SouthWales-256kHz", name: "South Wales" },
-  { id: "BattyBirdNET-Sweden-256kHz", name: "Sweden" },
-  { id: "BattyBirdNET-Bavaria-256kHz", name: "Bavaria (Standard)" },
-  { id: "BattyBirdNET-Bavaria-256kHz-high", name: "Bavaria (High Sensitivity)" },
-  { id: "BattyBirdNET-USA-256kHz", name: "USA (General)" },
-  { id: "BattyBirdNET-USA-EAST-256kHz", name: "USA East Coast" },
-  { id: "BattyBirdNET-USA-EAST-256kHz-high", name: "USA East (High Sensitivity)" },
-  { id: "BattyBirdNET-USA-WEST-256kHz", name: "USA West Coast" },
-  { id: "CUSTOM-BAT-256kHz", name: "Custom Bat Classifier" },
-  { id: "CUSTOM-BIRD-48kHz", name: "Custom Bird Classifier (48kHz)" },
+  { id: "BattyBirdNET-EU-256kHz", name: "Europa (Ogólny)" },
+  { id: "BattyBirdNET-UK-256kHz", name: "Wielka Brytania" },
+  { id: "BattyBirdNET-Scotland-256kHz", name: "Szkocja" },
+  { id: "BattyBirdNET-SouthWales-256kHz", name: "Południowa Walia" },
+  { id: "BattyBirdNET-Sweden-256kHz", name: "Szwecja" },
+  { id: "BattyBirdNET-Bavaria-256kHz", name: "Bawaria (Standard)" },
+  { id: "BattyBirdNET-Bavaria-256kHz-high", name: "Bawaria (Wysoka czułość)" },
+  { id: "BattyBirdNET-USA-256kHz", name: "USA (Ogólny)" },
+  { id: "BattyBirdNET-USA-EAST-256kHz", name: "USA Wschodnie Wybrzeże" },
+  { id: "BattyBirdNET-USA-EAST-256kHz-high", name: "USA Wschód (Wysoka czułość)" },
+  { id: "BattyBirdNET-USA-WEST-256kHz", name: "USA Zachodnie Wybrzeże" },
+  { id: "CUSTOM-BAT-256kHz", name: "Własny Klasyfikator Nietoperzy" },
+  { id: "CUSTOM-BIRD-48kHz", name: "Własny Klasyfikator Ptaków (48kHz)" },
 ];
 
 export default function BatAnalyzer() {
@@ -113,10 +113,10 @@ export default function BatAnalyzer() {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div className="space-y-2">
           <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-            Bat Sound Identification
+            Identyfikacja Głosów Nietoperzy
           </h2>
           <p className="text-lg text-zinc-400">
-            Professional bat vocalization analysis and visualization.
+            Profesjonalna analiza i wizualizacja wokalizacji nietoperzy.
           </p>
         </div>
         <Button 
@@ -128,7 +128,7 @@ export default function BatAnalyzer() {
           )}
         >
           <Settings2 className="mr-2 h-4 w-4" />
-          {showSettings ? "Hide Settings" : "Show Settings"}
+          {showSettings ? "Ukryj Ustawienia" : "Pokaż Ustawienia"}
         </Button>
       </div>
 
@@ -143,7 +143,7 @@ export default function BatAnalyzer() {
             <div className="grid gap-6 md:grid-cols-2 p-6 rounded-3xl border border-zinc-800 bg-zinc-950/50 backdrop-blur-sm">
               <div className="space-y-3">
                 <label className="text-sm font-medium text-zinc-400 flex justify-between">
-                  Confidence Threshold <span>{Math.round(minConfidence * 100)}%</span>
+                  Próg pewności <span>{Math.round(minConfidence * 100)}%</span>
                 </label>
                 <input 
                   type="range" 
@@ -154,10 +154,10 @@ export default function BatAnalyzer() {
                   onChange={(e) => setMinConfidence(parseFloat(e.target.value))}
                   className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-blue-500"
                 />
-                <p className="text-xs text-zinc-500 italic">Only detections above this certainty will be shown.</p>
+                <p className="text-xs text-zinc-500 italic">Tylko detekcje powyżej tej pewności będą wyświetlane.</p>
               </div>
               <div className="space-y-3">
-                <label className="text-sm font-medium text-zinc-400">Regional Model</label>
+                <label className="text-sm font-medium text-zinc-400">Model regionalny</label>
                 <select 
                   value={selectedModel}
                   onChange={(e) => setSelectedModel(e.target.value)}
@@ -199,10 +199,10 @@ export default function BatAnalyzer() {
               </div>
               <div className="space-y-2">
                 <p className="text-base font-medium text-white max-w-[200px] truncate">
-                  {file ? file.name : "Click or drag to upload"}
+                  {file ? file.name : "Kliknij lub przeciągnij plik"}
                 </p>
                 <p className="text-sm text-zinc-500 uppercase tracking-wider">
-                  Audio Analysis
+                  Analiza Audio
                 </p>
               </div>
             </div>
@@ -217,10 +217,10 @@ export default function BatAnalyzer() {
             {isAnalyzing ? (
               <>
                 <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                Processing...
+                Przetwarzanie...
               </>
             ) : (
-              "Identify Bat Species"
+              "Zidentyfikuj Gatunki Nietoperzy"
             )}
           </Button>
 
@@ -243,11 +243,11 @@ export default function BatAnalyzer() {
               >
                 <div className="flex items-center gap-3">
                   <CheckCircle2 className="h-5 w-5 flex-shrink-0" />
-                  <p className="text-sm font-medium">Found {results.length} detection(s)</p>
+                  <p className="text-sm font-medium">Znaleziono {results.length} detekcji</p>
                 </div>
                 <Button variant="ghost" size="sm" onClick={downloadCSV} className="h-8 text-emerald-400 hover:bg-emerald-500/20">
                   <Download className="mr-2 h-3.5 w-3.5" />
-                  CSV
+                  Pobierz CSV
                 </Button>
               </motion.div>
             )}
@@ -261,18 +261,18 @@ export default function BatAnalyzer() {
                 <div className="w-full h-full p-2">
                    <div className="flex items-center gap-2 mb-2 px-4 pt-2">
                       <ImageIcon className="h-4 w-4 text-blue-400" />
-                      <span className="text-xs font-semibold text-zinc-500 uppercase tracking-tighter">Voice Spectrogram</span>
+                      <span className="text-xs font-semibold text-zinc-500 uppercase tracking-tighter">Spektrogram Głosu</span>
                    </div>
                    <img 
                     src={`data:image/png;base64,${spectrogram}`} 
-                    alt="Spectrogram" 
+                    alt="Spektrogram" 
                     className="w-full h-[200px] object-cover rounded-xl"
                   />
                 </div>
               ) : (
                 <div className="text-center space-y-2 opacity-20">
                   <BarChart2 className="h-12 w-12 mx-auto text-zinc-600" />
-                  <p className="text-sm text-zinc-500">Visualization will appear here</p>
+                  <p className="text-sm text-zinc-500">Wizualizacja pojawi się tutaj</p>
                 </div>
               )}
            </div>
@@ -288,8 +288,8 @@ export default function BatAnalyzer() {
                   <thead>
                     <tr className="border-b border-zinc-800 bg-zinc-900/20">
                       <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase">Segment</th>
-                      <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase">Species</th>
-                      <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase text-right">Match</th>
+                      <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase">Gatunek</th>
+                      <th className="px-6 py-4 text-xs font-bold text-zinc-500 uppercase text-right">Dopasowanie</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-zinc-900">
@@ -317,7 +317,7 @@ export default function BatAnalyzer() {
                       </motion.tr>
                     )) : (
                       <tr>
-                        <td colSpan={3} className="px-6 py-12 text-center text-zinc-600 italic">No significant detections found with current threshold.</td>
+                        <td colSpan={3} className="px-6 py-12 text-center text-zinc-600 italic">Nie znaleziono detekcji spełniających obecny próg.</td>
                       </tr>
                     )}
                   </tbody>
